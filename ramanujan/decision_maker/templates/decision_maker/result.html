@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Ramanujan</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" 
+              integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+  </head>
+  <body>
+	<div class="container body-content" style="display:grid;place-items:center;height:90vh;">  
+		<div class="col-md-4" style="padding-top:10px;">
+			<div class="row">
+				<h2>{{ question }}</h2>
+			</div>
+			<div class="row" style="padding-top:10px;">
+				<div id="piechart">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+		</div>
+	</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+    <script type="text/javascript">
+		// Load google charts
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+
+		// Draw the chart and set the chart values
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([							
+							{% for c in data %}
+								{% if forloop.first %}
+							    ['{{ c.0 }}', '{{c.1}}'],
+								{% else %}
+								['{{ c.0 }}', {{c.1}}],
+								{% endif %}
+						    {% endfor %}
+							]);
+
+
+		  // Optional; add a title and set the width and height of the chart
+		  var options = {'title': 'On total of {{ total }} vote(s)', 'width':550, 'height':400};
+
+		  // Display the chart inside the <div> element with id="piechart"
+		  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		  chart.draw(data, options);
+		}
+	</script> 
+  </body>
+</html>
